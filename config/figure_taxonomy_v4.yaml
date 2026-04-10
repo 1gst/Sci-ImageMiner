@@ -1,0 +1,428 @@
+# ============================================================
+# Sci-ImageMiner Figure Classification Taxonomy v4 (Optimized)
+# 49 categories - Clear definitions with key distinguishing features
+# ============================================================
+
+# =============================================================================
+# QUANTITATIVE PLOTS (有定量坐标轴和数据点的图表)
+# =============================================================================
+
+## 单一线条/数据系列图表
+line chart:
+  description: >
+    A plot with a SINGLE continuous line (one data series) where data points are connected by
+    visible line segments, showing a trend against a continuous X-axis. The X-axis must be a
+    general physical quantity (temperature, time, thickness, cycles, distance, etc.) — NOT a
+    spectroscopic quantity.
+    
+    KEY FEATURE: Data points CONNECTED by visible line segments. Only ONE data series.
+    
+    IMPORTANT DISTINCTIONS:
+    - vs scatter plot: If ANY line segments connect data points, it is a line chart, NOT scatter plot.
+      Even if markers are prominent, the presence of connecting lines makes it a line chart.
+    - vs multiple line chart: Count the number of data series. ONE series = line chart.
+      TWO OR MORE series = multiple line chart.
+    - vs spectra chart: Check X-axis. If X-axis is spectroscopic (binding energy, wavenumber, 2theta,
+      wavelength, Raman shift, m/z), it is a spectra chart, NOT line chart.
+
+scatter plot:
+  description: >
+    A SINGLE set of discrete data points (one series) on two quantitative axes. Points appear as
+    markers (dots, circles, squares, triangles) with NO connecting lines between them.
+    
+    KEY FEATURE: NO visible line segments connecting data points. Only ONE data series.
+    
+    IMPORTANT DISTINCTIONS:
+    - vs line chart: If you can see ANY line segments drawn between consecutive data points,
+      it is a line chart, NOT scatter plot. Trend lines, fit curves, or guide-to-eye lines
+      that connect data points also indicate line chart.
+    - vs multiple scatter plot: Count the number of data series. ONE series = scatter plot.
+      TWO OR MORE series = multiple scatter plot.
+
+spectra chart:
+  description: >
+    A SINGLE spectrum from spectroscopy/diffraction (XPS, XRD, FTIR, Raman, UV-vis, EDS, etc.).
+    
+    KEY FEATURE: X-axis is a SPECTROSCOPIC quantity (binding energy, wavenumber, 2theta, wavelength,
+    Raman shift, m/z). Y-axis is intensity/counts/absorbance/transmittance. Only ONE spectrum.
+    
+    IMPORTANT DISTINCTIONS:
+    - vs multi spectra chart: Count the spectra. ONE spectrum = spectra chart.
+      TWO OR MORE spectra on the same axes = multi spectra chart.
+
+## 多个线条/数据系列图表
+multiple line chart:
+  description: >
+    TWO OR MORE continuous lines (multiple data series) on the same axes, each with different
+    color/style. X-axis is a general physical quantity (temperature, time, cycles, thickness,
+    pressure, distance) — NOT a spectroscopic quantity.
+    
+    KEY FEATURE: Data points in each series are CONNECTED by visible line segments. TWO OR MORE series.
+    
+    IMPORTANT DISTINCTIONS:
+    - vs multiple scatter plot: If ANY series has line segments connecting its data points,
+      classify as multiple line chart, NOT multiple scatter plot.
+    - vs multi spectra chart: Check X-axis. If X-axis is a general physical quantity (NOT
+      spectroscopic), it is multiple line chart. If X-axis is spectroscopic, it is multi spectra chart.
+    - vs line chart: TWO OR MORE series = multiple line chart. ONE series = line chart.
+
+multiple scatter plot:
+  description: >
+    TWO OR MORE sets of discrete data points (multiple series) on the same axes, using different
+    marker shapes or colors. NO connecting lines in ANY series.
+    
+    KEY FEATURE: Points in ALL series are discrete markers WITHOUT connecting lines. TWO OR MORE series.
+    
+    IMPORTANT DISTINCTIONS:
+    - vs multiple line chart: If ANY series has connecting lines, it is multiple line chart.
+      Only classify as multiple scatter plot when ALL series show discrete markers only.
+
+multi spectra chart:
+  description: >
+    Multiple overlaid spectra on the SAME axes from spectroscopy/diffraction (XPS, XRD, FTIR,
+    Raman, UV-vis, EDS, etc.). Multiple curves share the same Y baseline (overlap on each other).
+    
+    KEY FEATURE: X-axis MUST be a SPECTROSCOPIC quantity (binding energy, wavenumber, 2theta,
+    wavelength, Raman shift, m/z). TWO OR MORE spectra overlaid on the same baseline.
+    
+    IMPORTANT DISTINCTIONS:
+    - vs multiple line chart: The ONLY difference is the X-axis type. If X-axis is a general
+      physical quantity (temperature, time, cycles, etc.), it is multiple line chart.
+      If X-axis is spectroscopic, it is multi spectra chart.
+    - vs stacked spectra chart: If spectra share the SAME baseline (overlap), it is multi spectra chart.
+      If spectra are VERTICALLY OFFSET with separate baselines, it is stacked spectra chart.
+    - vs spectra chart: ONE spectrum = spectra chart. TWO OR MORE = multi spectra chart.
+
+stacked spectra chart:
+  description: >
+    Multiple spectra vertically OFFSET (stacked) so each has its own baseline, arranged one above
+    another for comparison.
+    
+    KEY FEATURE: X-axis is a SPECTROSCOPIC quantity. Each spectrum has its own SEPARATE vertical
+    baseline, vertically offset from others.
+    
+    IMPORTANT DISTINCTIONS:
+    - vs multi spectra chart: If spectra OVERLAP on the same baseline, it is multi spectra chart.
+      If spectra are VERTICALLY SEPARATED with individual baselines, it is stacked spectra chart.
+
+## 特殊图表类型
+multi-axis chart:
+  description: >
+    A plot with two or more Y-axes (left and right) showing different scales or units for
+    different data series on the same X-axis.
+    
+    KEY FEATURE: Two distinct Y-axis scales, one on each side.
+
+process timing diagram:
+  description: >
+    A time-axis plot showing process variables (gas flows, pressure, power, valve states) as
+    step-like rectangular or pulsed waveforms with sharp on/off transitions.
+    
+    KEY FEATURE: Discrete rectangular/pulsed waveforms with sharp vertical transitions, NOT smooth
+    continuous curves.
+
+adsorption isotherm:
+  description: >
+    Plot showing gas uptake vs. pressure (or P/P0), used for BET analysis and adsorption capacity.
+    X-axis is pressure or relative pressure (P/P0), Y-axis is amount adsorbed.
+
+competing reaction rate curve:
+  description: >
+    A SCHEMATIC diagram using abstract/idealized smooth curves (NOT real experimental data),
+    labels, and shaded regions to explain competing reaction rates in ALD/ALE (e.g., temperature
+    window diagrams showing CVD vs ALD regimes). These are conceptual schematics, NOT data plots.
+
+# =============================================================================
+# SCHEMATIC DIAGRAMS (无定量坐标轴的原理图/示意图)
+# =============================================================================
+
+## 分子/原子结构类 (最高优先级)
+molecular structure diagram:
+  description: >
+    A diagram displaying the chemical structure of molecules, precursors, or atomic arrangements
+    using standard chemistry visualization. The PRIMARY purpose is to show WHAT a molecule or
+    atomic arrangement looks like, NOT how it transforms or its energy.
+    
+    KEY FEATURE: Individual atoms rendered as colored SPHERES or BALLS with bonds as sticks.
+    
+    INCLUDES:
+    - 2D structural formulas with atoms as labeled nodes and bond lines
+    - Ball-and-stick models (atoms as balls, bonds as sticks)
+    - Space-filling models (atoms as overlapping spheres)
+    - DFT/MD rendered structures (molecule on surface, unit cells, surface slab models)
+    
+    IMPORTANT DISTINCTIONS:
+    - vs reaction energy profile diagram: If the figure has a Y-axis with energy units (eV,
+      kcal/mol) and an X-axis labeled "Reaction coordinate", it is a reaction energy profile
+      diagram, even if molecular structures are shown alongside the energy curve. The presence
+      of an energy axis is the deciding factor.
+    - vs reaction scheme: If there are reaction arrows showing transformation between species,
+      it is a reaction scheme, even if molecular structures are visible. The presence of
+      transformation arrows is the deciding factor.
+    - Only classify as molecular structure diagram when the figure PURELY shows molecular/atomic
+      structure without energy axes or transformation arrows.
+
+reaction scheme:
+  description: >
+    A diagram showing chemical TRANSFORMATIONS between species. The PRIMARY purpose is to show
+    HOW reactants transform into products through a chemical process.
+    
+    KEY FEATURE: Reaction arrows (forward arrow, equilibrium arrows, curved arrows) connecting 
+    reactant species to product species, showing a TRANSFORMATION process.
+    
+    INCLUDES:
+    - Chemical equations with arrows between structures
+    - Surface reaction mechanism diagrams (before/after states with arrows)
+    - Precursor approaching surface, adsorbed state, byproduct leaving
+    
+    IMPORTANT DISTINCTIONS:
+    - vs molecular structure diagram: If the figure shows molecular structures WITHOUT any
+      transformation arrows, it is molecular structure diagram. If arrows show transformation
+      between species, it is reaction scheme.
+    - vs reaction energy profile diagram: If the figure has quantitative energy axes (Y-axis
+      with eV/kcal/mol and X-axis with "Reaction coordinate"), it is reaction energy profile
+      diagram, NOT reaction scheme, even if reaction arrows are present.
+
+reaction energy profile diagram:
+  description: >
+    A quantitative energy diagram plotting potential energy along an abstract "reaction coordinate".
+    Shows the energy landscape of a chemical reaction with labeled states.
+    
+    KEY FEATURE: ALL THREE conditions must be met simultaneously:
+    1. Y-axis explicitly labeled with energy units (eV, kcal/mol, kJ/mol, Hartree)
+    2. X-axis labeled "Reaction coordinate" or "Reaction path" (NOT temperature/time/distance)
+    3. Labeled chemical states (reactants, TS, intermediates, products) at energy levels
+    
+    IMPORTANT DISTINCTIONS:
+    - vs molecular structure diagram: Even if molecular structures are drawn alongside the
+      energy curve, the presence of energy axes makes it a reaction energy profile diagram.
+      The energy axis is the DECISIVE feature.
+    - vs reaction scheme: Reaction energy profile diagrams have QUANTITATIVE energy axes.
+      Reaction schemes show transformations WITHOUT quantitative energy axes.
+    - vs line chart: If X-axis is a concrete physical quantity (temperature, time, distance,
+      cycles) rather than "Reaction coordinate", it is a line chart, NOT this category.
+
+## 实验装置/设备类
+apparatus diagram:
+  description: >
+    A labeled diagram of laboratory equipment layout (reactors, chambers, pumps, gas lines, heaters).
+    Focus is on hardware components and spatial arrangement of the experimental setup.
+    
+    KEY FEATURE: Shows full experimental equipment setup, not just a device cross-section.
+
+device structure diagram:
+  description: >
+    A cross-sectional or layered schematic of a fabricated device or thin-film stack, showing
+    labeled material layers (substrate, oxide, metal, dielectric) arranged vertically with clear
+    boundaries and optional thickness annotations.
+    
+    KEY FEATURE: Static layered STRUCTURE with clear material labels.
+
+## 流程/过程类
+process flow diagram:
+  description: >
+    A schematic showing a SEQUENCE of discrete, numbered/ordered operational steps connected by
+    directional arrows.
+    
+    KEY FEATURE: Numbered or ordered PROCEDURAL steps with action labels (e.g., "Step 1: Precursor
+    pulse", "Step 2: N2 purge", "Step 3: Plasma exposure").
+
+workflow diagram:
+  description: >
+    Diagram showing a computational, data-processing, or methodological pipeline (e.g., ML
+    workflow, simulation workflow, analysis pipeline).
+    
+    KEY FEATURE: Computational or analytical methodology steps (NOT physical/chemical experimental steps).
+
+## 通用原理图
+conceptual diagram:
+  description: >
+    A schematic illustration explaining a theoretical model, physical mechanism, or abstract concept
+    using simplified drawings, icons, labeled regions, and arrows.
+    
+    KEY FEATURE: DEFAULT schematic category — use ONLY when the figure does NOT fit any more specific
+    schematic type.
+
+# =============================================================================
+# DATA VISUALIZATION (数据可视化图表)
+# =============================================================================
+
+bar chart:
+  description: >
+    Rectangular bars (single series) comparing quantities across categories.
+    
+    KEY FEATURE: Single set of vertical or horizontal bars.
+
+grouped bar chart:
+  description: >
+    Bars grouped by categories for side-by-side comparison of multiple series.
+    
+    KEY FEATURE: Multiple bar groups, each containing multiple bars side-by-side.
+
+stacked bar chart:
+  description: >
+    Bars stacked to show part-to-whole relationships.
+    
+    KEY FEATURE: Bars divided into segments stacked on top of each other.
+
+3d bar chart:
+  description: >
+    A bar chart rendered in 3D perspective, with bars rising from a 2D base plane along a third axis.
+
+area chart:
+  description: >
+    Filled area under a line to show cumulative values or trends.
+    
+    KEY FEATURE: Area between line and axis is filled with color/pattern.
+
+bubble chart:
+  description: >
+    Scatter plot with variable marker size representing a third dimension.
+    
+    KEY FEATURE: Data points are circles of varying sizes.
+
+pie chart:
+  description: >
+    Circular chart divided into slices to show proportions.
+    
+    KEY FEATURE: Circular shape with wedge-shaped slices.
+
+donut chart:
+  description: >
+    Pie chart with a central hole to show proportions.
+    
+    KEY FEATURE: Circular chart with hollow center.
+
+box plot:
+  description: >
+    Statistical distribution showing median, quartiles, and outliers.
+    
+    KEY FEATURE: Box with whiskers and median line.
+
+heatmap:
+  description: >
+    Matrix of values represented with a color scale.
+    
+    KEY FEATURE: 2D grid with color intensity representing values.
+
+contour heatmap:
+  description: >
+    A 2D plot using color gradients or contour lines to map a measured quantity across two
+    spatial or parameter dimensions.
+
+radar chart (spider chart):
+  description: >
+    Multivariate data represented in a radial layout.
+    
+    KEY FEATURE: Polygon shape with radiating axes.
+
+polar chart (rose chart):
+  description: >
+    Circular chart plotting values by angle.
+    
+    KEY FEATURE: Circular plot with data arranged radially by angle.
+
+treemap:
+  description: >
+    Nested rectangles sized by values to show hierarchy.
+
+funnel chart:
+  description: >
+    Progressive reduction across stages of a process.
+
+timeline chart:
+  description: >
+    Chronological sequence of events or steps.
+
+3d scatter plot:
+  description: >
+    A scatter plot in 3D space with data points defined by three variables (X, Y, Z) and three
+    visible axes.
+
+phase diagram:
+  description: >
+    Chart showing equilibrium phase boundaries in temperature–pressure–composition space.
+
+band diagram:
+  description: >
+    Chart plotting electronic energy levels vs. momentum (k) or position, showing band gaps and
+    Fermi levels.
+
+chromaticity diagram:
+  description: >
+    Horseshoe-shaped or triangular color-space diagram representing chromaticity of colors.
+
+element-property matrix:
+  description: >
+    Matrix-style visualization linking elements with categorical or binary properties.
+
+periodic table map:
+  description: >
+    Property overlay aligned to the full periodic table layout.
+
+map/geo chart:
+  description: >
+    Geographic or spatial distribution visualization.
+
+network diagram:
+  description: >
+    Nodes and edges showing relationships or interactions.
+
+tree diagram:
+  description: >
+    Hierarchical branching structure (taxonomy, phylogeny, decision tree).
+
+comparison table:
+  description: >
+    Structured tabular comparison of properties or studies.
+
+table:
+  description: >
+    General tabular data representation.
+
+formula:
+  description: >
+    Mathematical or chemical expression typeset as a formula or equation.
+
+# =============================================================================
+# IMAGES (真实图像)
+# =============================================================================
+
+image panel:
+  description: >
+    One or more microscopy/spectroscopy images (SEM, TEM, AFM, STM, HRTEM, EDX maps, optical
+    microscopy, photographic images) showing real physical samples, surfaces, or nanostructures.
+    
+    KEY FEATURE: Real instrument-captured photographs or microscopy images, NOT computer-generated
+    schematics, plots, or diagrams.
+    
+    IMPORTANT DISTINCTIONS:
+    - vs unknown: image panel is ONLY for real photographs/microscopy images that clearly show
+      physical samples captured by instruments (SEM, TEM, AFM, optical microscope, camera, etc.).
+      If the figure is NOT a real photograph but cannot be classified into any other category,
+      use 'unknown' instead.
+    - If a sub-figure appears to be a cropped/zoomed portion of another sub-figure's microscopy
+      image, it is still an image panel.
+    - If you cannot determine whether the figure is a real photograph or a computer rendering,
+      prefer 'unknown' over 'image panel'.
+
+# =============================================================================
+# UNKNOWN (无法分类)
+# =============================================================================
+
+unknown:
+  description: >
+    Any figure that cannot be confidently classified into the 48 defined categories above.
+    
+    KEY FEATURE: Use this category when the figure does NOT clearly fit any specific category.
+    
+    INCLUDES:
+    - Highly specialized or non-standard visualizations
+    - Figures with insufficient visual context to determine the type
+    - Computer-generated renderings that do not fit other schematic categories
+    - Figures that are ambiguous between multiple categories
+    
+    IMPORTANT DISTINCTIONS:
+    - vs image panel: 'unknown' is for figures that are NOT clearly real photographs/microscopy
+      images. If the figure is clearly a real instrument-captured image (SEM, TEM, AFM, etc.),
+      use 'image panel'. If unsure whether it is a real photo, use 'unknown'.

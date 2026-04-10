@@ -1,0 +1,263 @@
+3d bar chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Bar chart displayed in three dimensions
+  synonyms/aliases: []
+3d scatter plot:
+  parent_taxonomy: quantitative-plot
+  short_description: Scatter plot displayed in three dimensions
+  synonyms/aliases: []
+adsorption isotherm:
+  parent_taxonomy: quantitative-plot (domain-specific)
+  short_description: Specialized line/scatter plot showing gas uptake vs. pressure
+    (or relative pressure), used to derive Henry constants and capacity values
+  synonyms/aliases:
+  - isotherm plot
+apparatus diagram:
+  parent_taxonomy: scientific-schematic
+  short_description: Diagram of experimental or laboratory setups
+  synonyms/aliases:
+  - instrument setup diagram
+area chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Filled area under a line to show cumulative values or trends
+  synonyms/aliases:
+  - area graph
+band diagram:
+  parent_taxonomy: quantitative-plot (domain-specific)
+  short_description: Specialized chart plotting electronic energy levels vs. momentum
+    (k) or position, showing band gaps and Fermi levels
+  synonyms/aliases:
+  - electronic structure plot
+bar chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Rectangular bars to compare quantities across categories
+  synonyms/aliases:
+  - column chart
+box plot:
+  parent_taxonomy: quantitative-plot
+  short_description: Statistical distribution showing median, quartiles, and outliers
+  synonyms/aliases:
+  - whisker plot
+bubble chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Scatter plot with variable marker size representing a third dimension
+  synonyms/aliases: []
+chromaticity diagram:
+  parent_taxonomy: scientific-schematic
+  short_description: 'A chromaticity diagram represents the chromaticity of colors,
+    which is defined by two parameters: hue and saturation (or colorfulness). It allows
+    for the visualization of color relationships and is essential in color science
+    for understanding how colors interact and can be reproduced.'
+  synonyms/aliases: []
+comparison table:
+  parent_taxonomy: other
+  short_description: Structured tabular comparison of properties or studies
+  synonyms/aliases:
+  - comparative table
+competing reaction rate curve:
+  parent_taxonomy: scientific-schematic
+  short_description: 'Uses abstract curves, labels, and shaded regions to visually
+    explain the scientific concept alone in this ALE/ALD process. '
+  synonyms/aliases:
+  - kinetic regime diagram
+  - temperature window diagram
+  - temperature depend reaction rate diagram
+conceptual diagram:
+  parent_taxonomy: scientific-schematic
+  short_description: Illustration of theoretical models or mechanisms
+  synonyms/aliases:
+  - theoretical model diagram
+contour heatmap:
+  parent_taxonomy: quantitative-plot (domain-specific)
+  short_description: Profile mapping of pressure/temperature or any relevant parameter
+    of study
+  synonyms/aliases:
+  - 2d countour map
+device structure:
+  parent_taxonomy: scientific-schematic
+  short_description: Illustration of theoretical models or mechanisms
+  synonyms/aliases:
+  - theoretical model diagram
+donut chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Pie chart with a central hole to show proportions
+  synonyms/aliases:
+  - doughnut chart
+element–property matrix:
+  parent_taxonomy: matrix-layout
+  short_description: Matrix-style visualization linking a subset of elements (e.g.
+    lanthanides) with categorical or binary properties (e.g. precursor availability)
+  synonyms/aliases:
+  - element coverage matrix
+  - element coverage grid
+formula:
+  parent_taxonomy: other
+  short_description: Mathematical or chemical expression typeset as formula
+  synonyms/aliases:
+  - equation
+funnel chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Progressive reduction across stages of a process
+  synonyms/aliases: []
+grouped bar chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Bars grouped by categories for side-by-side comparison
+  synonyms/aliases:
+  - clustered bar chart
+heatmap:
+  parent_taxonomy: quantitative-plot
+  short_description: Matrix of values represented with colors
+  synonyms/aliases:
+  - heat map
+image panel:
+  parent_taxonomy: domain-specific
+  short_description: Collection of microscopy or spectroscopy images
+  synonyms/aliases:
+  - multi-image panel
+line chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Continuous line showing trends over intervals
+  synonyms/aliases:
+  - line graph
+map/geo chart:
+  parent_taxonomy: domain-specific
+  short_description: Geographic or spatial distribution visualization
+  synonyms/aliases:
+  - geographical map
+molecular structure diagram:
+  parent_taxonomy: scientific-schematic
+  short_description: Chemical structure drawings of molecules or precursors
+  synonyms/aliases:
+  - chemical structure diagram
+multi spectra chart:
+  parent_taxonomy: quantitative-plot (domain-specific)
+  short_description: Specialized multiple-line chart used in scientific spectroscopy/diffraction
+    contexts (NMR, IR, Raman, UV-vis, MS, XRD). Used to visualize multiple spectra
+    in a single plot, allowing for easy comparison of peak shifts, changes in peak
+    splittings, and signal intensities.
+  synonyms/aliases:
+  - multiple spectrum plot
+multi-axis chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Plot with multiple axes to compare different scales
+  synonyms/aliases:
+  - dual-axis chart
+multiple line chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Several lines showing multiple series of trends
+  synonyms/aliases:
+  - multi-line graph
+multiple scatter plot:
+  parent_taxonomy: quantitative-plot
+  short_description: Points plotted on two axes to show correlations allows and to
+    visualize different data sets/series/groups on the same chart.
+  synonyms/aliases:
+  - xy plot
+network diagram:
+  parent_taxonomy: matrix-layout
+  short_description: Nodes and edges showing relationships or interactions
+  synonyms/aliases:
+  - graph diagram
+periodic table map:
+  parent_taxonomy: matrix-layout
+  short_description: Property overlay aligned to the full periodic table layout (rows,
+    groups, blocks), typically showing trends across all or most elements
+  synonyms/aliases:
+  - element coverage map
+  - periodic property chart
+phase diagram:
+  parent_taxonomy: quantitative-plot (domain-specific)
+  short_description: Specialized chart showing equilibrium phase boundaries in temperature–pressure–composition
+    space
+  synonyms/aliases:
+  - phase map
+pie chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Circular chart divided into slices to show proportions
+  synonyms/aliases: []
+polar chart (rose chart):
+  parent_taxonomy: quantitative-plot
+  short_description: Circular chart plotting values by angle
+  synonyms/aliases:
+  - circular bar chart
+process flow diagram:
+  parent_taxonomy: scientific-schematic
+  short_description: Schematic showing sequential or cyclic steps in a scientific
+    or technical process
+  synonyms/aliases:
+  - flowchart
+  - cycle diagram
+process timing diagram:
+  parent_taxonomy: quantitative-plot (domain-specific)
+  short_description: Time-axis plot showing one or more process variables (e.g., gas
+    flows, pressure, power, valve states) as step-like or pulsed functions over a
+    cycle or sequence of steps.
+  synonyms/aliases:
+  - pulse/purge schematic
+  - half-cycle diagram
+  - time-resolved cycle schematic
+radar chart (spider chart):
+  parent_taxonomy: quantitative-plot
+  short_description: Multivariate data represented in a radial layout
+  synonyms/aliases:
+  - web chart
+reaction energy profile diagram:
+  parent_taxonomy: Reaction coordinate diagram
+  short_description: Pathways showing relative energies of reactant complexes
+  synonyms/aliases: []
+reaction scheme:
+  parent_taxonomy: scientific-schematic
+  short_description: Arrows and molecules showing chemical reactions
+  synonyms/aliases:
+  - reaction pathway
+scatter plot:
+  parent_taxonomy: quantitative-plot
+  short_description: Points plotted on two axes to show correlations
+  synonyms/aliases:
+  - xy plot
+spectra chart:
+  parent_taxonomy: quantitative-plot (domain-specific)
+  short_description: Specialized line chart used in scientific spectroscopy/diffraction
+    contexts (NMR, IR, Raman, UV-vis, MS, XRD)
+  synonyms/aliases:
+  - spectral plot
+stacked bar chart:
+  parent_taxonomy: quantitative-plot
+  short_description: Bars stacked to show part-to-whole relationships
+  synonyms/aliases: []
+stacked spectra chart:
+  parent_taxonomy: quantitative-plot (domain-specific)
+  short_description: Specialized stacked multiple-line chart used in scientific spectroscopy/diffraction
+    contexts (NMR, IR, Raman, UV-vis, MS, XRD). Used to visualize multiple spectra
+    in a single plot, allowing for easy comparison of peak shifts, changes in peak
+    splittings, and signal intensities.
+  synonyms/aliases:
+  - stacked spectrum plot
+table:
+  parent_taxonomy: other
+  short_description: General tabular data representation
+  synonyms/aliases:
+  - data table
+timeline chart:
+  parent_taxonomy: other
+  short_description: Chronological sequence of events or steps
+  synonyms/aliases:
+  - chronology chart
+tree diagram:
+  parent_taxonomy: matrix-layout
+  short_description: Hierarchical branching structure (taxonomy, phylogeny, decision)
+  synonyms/aliases:
+  - hierarchical diagram
+treemap:
+  parent_taxonomy: quantitative-plot
+  short_description: Nested rectangles sized by values to show hierarchy
+  synonyms/aliases: []
+unknown:
+  parent_taxonomy: other
+  short_description: Unclassified or unclear figure type
+  synonyms/aliases: []
+workflow diagram:
+  parent_taxonomy: other
+  short_description: Diagram showing pipeline or methodological steps
+  synonyms/aliases:
+  - pipeline diagram

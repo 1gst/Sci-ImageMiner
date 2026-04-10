@@ -1,0 +1,451 @@
+# 分类任务提示词配置文件（所有版本）
+
+# 分类任务提示词 v1
+v1:
+  system: |
+    You are an expert at classifying scientific figures from ALD/ALE research papers.
+
+  user: |
+    Classify the scientific figure(s) below into one of {class_count} categories.
+
+    ## Category Taxonomy
+    {classes}
+
+    ## Decision Guide
+
+    **Step 1: Is this a quantitative plot (has labeled axes with numerical data)?**
+    If YES, determine axis types:
+    - X-axis is spectroscopic (wavenumber, binding energy, 2θ, Raman shift, m/z) → spectra / multi spectra / stacked spectra chart
+    - X-axis is general physical quantity (temperature, time, cycles, thickness, pressure) → line chart / scatter plot / multiple variants
+    - Then check: points connected by lines → line chart variant; discrete markers only → scatter plot variant
+    - Single series → singular form; multiple series → "multiple" variant
+    - Two Y-axes → multi-axis chart
+
+    **Step 2: Is this a schematic/diagram (no quantitative axes)?**
+    Apply this priority order:
+    1. **molecular structure diagram** — Can you see individual atoms rendered as colored spheres with bonds as sticks? (ball-and-stick, space-filling models, 2D structural formulas) → YES = molecular structure diagram, even if atoms are on a surface/substrate
+    2. **reaction scheme** — Are there reaction arrows (→, ⇌) showing chemical transformation between species? → YES = reaction scheme
+    3. **process flow diagram** — Are there numbered/ordered procedural steps with action labels? → YES = process flow diagram
+    4. **device structure diagram** — Is it a static layered cross-section of a fabricated device? → YES = device structure diagram
+    5. **conceptual diagram** — None of the above matched → conceptual diagram
+
+    ## High-Frequency Confusion Rules
+
+    | If predicting... | Check this... | Correct answer |
+    |---|---|---|
+    | conceptual diagram | Are individual atoms visible as spheres/balls with bond sticks? | → molecular structure diagram |
+    | conceptual diagram | Are there arrows (→) showing chemical transformation between species? | → reaction scheme |
+    | reaction energy profile diagram | Is X-axis a concrete quantity (T, time, distance, cycles)? | → line chart / scatter plot |
+    | reaction energy profile diagram | Does it show molecular structures with reaction arrows alongside energy? | → reaction scheme |
+    | line chart | Are data points discrete markers WITHOUT connecting lines? | → scatter plot |
+    | multiple line chart | Are data points discrete markers WITHOUT connecting lines? | → multiple scatter plot |
+    | multi spectra chart | Is X-axis a general physical quantity (not spectroscopic)? | → multiple line chart |
+    | image panel | Does the figure not match ANY of the 48 defined categories? | → unknown |
+    | process flow diagram | Does it show chemical structures with reaction arrows? | → reaction scheme |
+
+    ## Sub-figure Handling
+    - If the figure contains sub-figures (labeled a, b, c, d...), classify EACH separately.
+    - If no sub-figure labels are visible, use "a" as the default key.
+
+    Caption: {caption}
+
+    {example_reference}
+
+    ## Output
+    Return ONLY a valid JSON dictionary. Use EXACT category names from the taxonomy.
+    Example: {{"a": "scatter plot", "b": "line chart"}}
+    Please fill in the category for each sub-image in the JSON below (corresponding to the sub-images in the first image).
+    {uncategorized_dict}
+
+  example_reference_template: |
+    ## Reference Examples
+    The following images (starting with the second image; the first image is an unclassified image) show examples of various categories, with the image type indicated in red text; some categories do not have examples. Please use these examples to calibrate your judgment.
+
+# 分类任务提示词 v2
+v2:
+  system: |
+    You are an expert at classifying scientific figures from ALD/ALE research papers.
+
+  user: |
+    Classify the scientific figure(s) below into one of {class_count} categories.
+
+    ## Category Taxonomy
+    {classes}
+
+    ## Step-by-Step Decision Guide
+
+    **CRITICAL FIRST STEP: Determine if this is a QUANTITATIVE PLOT or a SCHEMATIC DIAGRAM**
+    
+    ### A. QUANTITATIVE PLOTS (has labeled axes with numerical data)
+    
+    **Step A1: Check X-axis type**
+    - X-axis is spectroscopic (wavenumber, binding energy, 2θ, wavelength, Raman shift, m/z)
+      → Go to Step A2a (spectra variants)
+    - X-axis is general physical quantity (temperature, time, cycles, thickness, pressure, distance)
+      → Go to Step A2b (line/scatter variants)
+    
+    **Step A2a: Spectroscopic X-axis**
+    - Single spectrum → 'spectra chart'
+    - Multiple spectra on SAME baseline → 'multi spectra chart'
+    - Multiple spectra VERTICALLY STACKED with separate baselines → 'stacked spectra chart'
+    
+    **Step A2b: General physical quantity X-axis**
+    - Single data series with CONNECTED lines → 'line chart'
+    - Single data series with DISCRETE markers only (NO lines) → 'scatter plot'
+    - Multiple series with CONNECTED lines → 'multiple line chart'
+    - Multiple series with DISCRETE markers only (NO lines) → 'multiple scatter plot'
+    - Two Y-axes (left and right) → 'multi-axis chart'
+    - Time-axis with rectangular/pulsed waveforms → 'process timing diagram'
+    
+    ### B. SCHEMATIC DIAGRAMS (no quantitative axes)
+    
+    **Apply this EXACT priority order (do NOT skip steps):**
+    
+    1. **molecular structure diagram** — Can you clearly see individual atoms rendered as colored 
+       SPHERES/BALLS with bonds as sticks? (ball-and-stick, space-filling models, 2D structural 
+       formulas with element symbols)
+       → YES = molecular structure diagram, even if atoms are on a surface/substrate
+       → NO = Go to step 2
+    
+    2. **reaction scheme** — Are there reaction arrows (→, ⇌, or curved arrows) showing chemical 
+       TRANSFORMATION between species (reactants → products)?
+       → YES = reaction scheme
+       → NO = Go to step 3
+    
+    3. **reaction energy profile diagram** — ALL THREE must be TRUE:
+       (a) Y-axis labeled with energy units (eV, kcal/mol, kJ/mol, Hartree)
+       (b) X-axis labeled "Reaction coordinate" or "Reaction path" (NOT temperature/time/distance)
+       (c) Labeled chemical states (reactants, TS, intermediates, products) at energy levels
+       → ALL TRUE = reaction energy profile diagram
+       → ANY FALSE = NOT this category, go to step 4
+    
+    4. **process flow diagram** — Are there numbered/ordered PROCEDURAL steps with action labels 
+       (e.g., "Precursor pulse", "N2 purge", "Plasma exposure") connected by arrows?
+       → YES = process flow diagram
+       → NO = Go to step 5
+    
+    5. **device structure diagram** — Is it a static layered cross-section of a fabricated device 
+       with material layers (substrate, oxide, metal, dielectric) labeled?
+       → YES = device structure diagram
+       → NO = Go to step 6
+    
+    6. **apparatus diagram** — Does it show laboratory equipment layout (reactors, chambers, pumps, 
+       gas lines) rather than a device cross-section?
+       → YES = apparatus diagram
+       → NO = Go to step 7
+    
+    7. **conceptual diagram** — None of the above matched. This is the default for schematic 
+       illustrations explaining concepts, mechanisms, or theoretical models.
+       → conceptual diagram
+    
+    ## Critical Decision Rules (High-Frequency Errors)
+    
+    | Mistake | Correction Check | Correct Category |
+    |---|---|---|
+    | Over-using 'reaction energy profile diagram' | Is X-axis a concrete quantity (T, time, distance, cycles)? | → line chart / scatter plot / multiple variants |
+    | Over-using 'reaction energy profile diagram' | Does it show molecular structures with → arrows? | → reaction scheme |
+    | 'line chart' vs 'scatter plot' | Are markers connected by lines? | Connected → line chart; Discrete only → scatter plot |
+    | 'multiple line chart' vs 'multiple scatter plot' | Are markers connected by lines? | Connected → multiple line chart; Discrete only → multiple scatter plot |
+    | 'multi spectra chart' misuse | Is X-axis spectroscopic? | No → multiple line chart |
+    | 'conceptual diagram' over-use | Are individual atoms rendered as spheres/balls? | Yes → molecular structure diagram |
+    | 'conceptual diagram' over-use | Are there reaction arrows (→)? | Yes → reaction scheme |
+    | 'image panel' over-use | Does it NOT match any of 48 categories? | → unknown (NOT image panel) |
+    | 'process flow diagram' vs 'reaction scheme' | Does it show chemical structures with → arrows? | Yes → reaction scheme |
+    
+    ## Sub-figure Handling
+    - If the figure contains sub-figures (labeled a, b, c, d...), classify EACH separately.
+    - If no sub-figure labels are visible, use "a" as the default key.
+
+    Caption: {caption}
+
+    {example_reference}
+
+    ## Output
+    Return ONLY a valid JSON dictionary. Use EXACT category names from the taxonomy.
+    Example: {{"a": "scatter plot", "b": "line chart"}}
+    Please fill in the category for each sub-image in the JSON below (corresponding to the sub-images in the first image).
+    {uncategorized_dict}
+
+  example_reference_template: |
+    ## Reference Examples
+    The following images (starting with the second image; the first image is an unclassified image) show examples of various categories, with the image type indicated in red text; some categories do not have examples. Use these examples to calibrate your judgment.
+
+# 分类任务提示词 v3 (基于 V2，仅精准修改 reaction energy profile diagram 规则)
+v3:
+  system: |
+    You are an expert at classifying scientific figures from ALD/ALE research papers.
+
+  user: |
+    Classify the scientific figure(s) below into one of {class_count} categories.
+
+    ## Image Input Order
+    - **Image 1 (first image):** The figure to be classified.
+    - **Images 2–N-1 (middle images):** Pages from the original paper, providing full-text context for understanding the figure.
+    - **Remaining images (after examples):** Reference examples of various categories (if provided), with the category name indicated in red text.
+
+    ## Category Taxonomy
+    {classes}
+
+    ## Step-by-Step Decision Guide
+
+    **CRITICAL FIRST STEP: Determine if this is a QUANTITATIVE PLOT or a SCHEMATIC DIAGRAM**
+    
+    ### A. QUANTITATIVE PLOTS (has labeled axes with numerical data)
+    
+    **Step A1: Check X-axis type**
+    - X-axis is spectroscopic (wavenumber, binding energy, 2θ, wavelength, Raman shift, m/z)
+      → Go to Step A2a (spectra variants)
+    - X-axis is general physical quantity (temperature, time, cycles, thickness, pressure, distance)
+      → Go to Step A2b (line/scatter variants)
+    
+    **Step A2a: Spectroscopic X-axis**
+    - Single spectrum → 'spectra chart'
+    - Multiple spectra on SAME baseline → 'multi spectra chart'
+    - Multiple spectra VERTICALLY STACKED with separate baselines → 'stacked spectra chart'
+    
+    **Step A2b: General physical quantity X-axis**
+    - Single data series with CONNECTED lines → 'line chart'
+    - Single data series with DISCRETE markers only (NO lines) → 'scatter plot'
+    - Multiple series with CONNECTED lines → 'multiple line chart'
+    - Multiple series with DISCRETE markers only (NO lines) → 'multiple scatter plot'
+    - Two Y-axes (left and right) → 'multi-axis chart'
+    - Time-axis with rectangular/pulsed waveforms → 'process timing diagram'
+    
+    ### B. SCHEMATIC DIAGRAMS (no quantitative axes)
+    
+    **Apply this EXACT priority order (do NOT skip steps):**
+    
+    1. **molecular structure diagram** — Can you clearly see individual atoms rendered as colored 
+       SPHERES/BALLS with bonds as sticks? (ball-and-stick, space-filling models, 2D structural 
+       formulas with element symbols)
+       → YES = molecular structure diagram, even if atoms are on a surface/substrate
+       → NO = Go to step 2
+    
+    2. **reaction scheme** — Are there reaction arrows (→, ⇌, or curved arrows) showing chemical 
+       TRANSFORMATION between species (reactants → products)?
+       → YES = reaction scheme
+       → NO = Go to step 3
+    
+    3. **reaction energy profile diagram** — ALL THREE must be TRUE:
+       (a) Y-axis labeled with energy units (eV, kcal/mol, kJ/mol, Hartree)
+       (b) X-axis labeled "Reaction coordinate" or "Reaction path" (NOT temperature/time/distance)
+       (c) Labeled chemical states (reactants, TS, intermediates, products) at energy levels
+       → ALL TRUE = reaction energy profile diagram
+       → ANY FALSE = NOT this category, go to step 4
+    
+    4. **process flow diagram** — Are there numbered/ordered PROCEDURAL steps with action labels 
+       (e.g., "Precursor pulse", "N2 purge", "Plasma exposure") connected by arrows?
+       → YES = process flow diagram
+       → NO = Go to step 5
+    
+    5. **device structure diagram** — Is it a static layered cross-section of a fabricated device 
+       with material layers (substrate, oxide, metal, dielectric) labeled?
+       → YES = device structure diagram
+       → NO = Go to step 6
+    
+    6. **apparatus diagram** — Does it show laboratory equipment layout (reactors, chambers, pumps, 
+       gas lines) rather than a device cross-section?
+       → YES = apparatus diagram
+       → NO = Go to step 7
+    
+    7. **conceptual diagram** — None of the above matched. This is the default for schematic 
+       illustrations explaining concepts, mechanisms, or theoretical models.
+       → conceptual diagram
+    
+    ## Critical Decision Rules (High-Frequency Errors)
+    
+    | Mistake | Correction Check | Correct Category |
+    |---|---|---|
+    | Over-using 'reaction energy profile diagram' | Is X-axis a concrete quantity (T, time, distance, cycles)? | → line chart / scatter plot / multiple variants |
+    | Over-using 'reaction energy profile diagram' | Does it show molecular structures with → arrows? | → reaction scheme |
+    | 'line chart' vs 'scatter plot' | Are markers connected by lines? | Connected → line chart; Discrete only → scatter plot |
+    | 'multiple line chart' vs 'multiple scatter plot' | Are markers connected by lines? | Connected → multiple line chart; Discrete only → multiple scatter plot |
+    | 'multi spectra chart' misuse | Is X-axis spectroscopic? | No → multiple line chart |
+    | 'conceptual diagram' over-use | Are individual atoms rendered as spheres/balls? | Yes → molecular structure diagram |
+    | 'conceptual diagram' over-use | Are there reaction arrows (→)? | Yes → reaction scheme |
+    | 'image panel' over-use | Does it NOT match any of 48 categories? | → unknown (NOT image panel) |
+    | 'process flow diagram' vs 'reaction scheme' | Does it show chemical structures with → arrows? | Yes → reaction scheme |
+    
+    ## Sub-figure Handling
+    - If the figure contains sub-figures (labeled a, b, c, d...), classify EACH separately.
+    - If no sub-figure labels are visible, use "a" as the default key.
+
+    Caption: {caption}
+
+    {example_reference}
+
+    ## Output
+    Return ONLY a valid JSON dictionary. Use EXACT category names from the taxonomy.
+    Example: {{"a": "scatter plot", "b": "line chart"}}
+    Please fill in the category for each sub-image in the JSON below (corresponding to the sub-images in the first image).
+    {uncategorized_dict}
+
+  example_reference_template: |
+    ## Original Paper Context
+     The middle images (between the first and the reference examples) are pages from the original paper. Use them as supplementary context for understanding the figure's purpose and content.
+    ## Reference Examples
+    The remaining images (after the original paper) show examples of various categories, with the category name indicated in red text; some categories may not have examples. Use these to calibrate your judgment.
+
+# 分类任务提示词 v4 (基于原v4+人工审查反馈优化: 强化混淆类别区分、子图key约束、image panel vs unknown)
+v4:
+  system: |
+    You are an expert at classifying scientific figures from ALD/ALE research papers.
+    You must strictly follow the output key constraints provided in the input.
+
+  user: |
+    Classify the scientific figure(s) below into one of {class_count} categories.
+
+    ## Image Input Order
+    - **Image 1 (first image):** The figure to be classified.
+    - **Images 2-N-1 (middle images):** Pages from the original paper, providing full-text context for understanding the figure.
+    - **Remaining images (after examples):** Reference examples of various categories (if provided), with the category name indicated in red text.
+
+    ## Category Taxonomy
+    {classes}
+
+    ## Classification Decision Flow
+
+    **Step 1: Determine if this is a QUANTITATIVE PLOT or a SCHEMATIC DIAGRAM**
+    
+    ### A. QUANTITATIVE PLOTS (has labeled axes with numerical data)
+    
+    **Step A1: Check X-axis type**
+    
+    Read the X-axis label carefully. Determine if it is:
+    
+    1. Spectroscopic quantity: Binding Energy (eV), Wavenumber (cm-1), 2theta (degrees), 
+       Wavelength (nm), Raman Shift (cm-1), m/z ratio
+       -> Go to Step A2a
+    
+    2. General physical quantity: Temperature, Time, Cycles, Thickness, Pressure, Distance, 
+       Voltage, Current, Concentration
+       -> Go to Step A2b
+    
+    **Step A2a: Spectroscopic X-axis**
+    - Count the number of spectra visible in the plot
+    - ONE spectrum only -> 'spectra chart'
+    - TWO OR MORE spectra sharing the SAME baseline (overlapping) -> 'multi spectra chart'
+    - TWO OR MORE spectra VERTICALLY OFFSET with separate baselines -> 'stacked spectra chart'
+    
+    **Step A2b: General physical quantity X-axis**
+    
+    Apply these checks IN ORDER:
+    
+    Check 1 - Are there two Y-axes (left and right with different scales)?
+    -> YES: 'multi-axis chart'
+    
+    Check 2 - Does the plot show rectangular/pulsed waveforms with sharp on/off transitions?
+    -> YES: 'process timing diagram'
+    
+    Check 3 - Count the number of data series (different colors, markers, or legend entries):
+    -> ONE series: Go to Check 4a
+    -> TWO OR MORE series: Go to Check 4b
+    
+    Check 4a (single series) - Are data points connected by visible line segments?
+    -> YES (lines connect points): 'line chart'
+    -> NO (discrete markers only, no connecting lines): 'scatter plot'
+    
+    Check 4b (multiple series) - Are data points connected by visible line segments in ANY series?
+    -> YES (any series has connecting lines): 'multiple line chart'
+    -> NO (ALL series show discrete markers only): 'multiple scatter plot'
+    
+    IMPORTANT for line vs scatter distinction:
+    - If you see ANY line segments connecting consecutive data points, classify as line chart variant
+    - Trend lines, fit curves, or guide-to-eye lines connecting points count as "connected"
+    - Only classify as scatter plot when points are truly isolated markers with NO connecting lines
+    
+    IMPORTANT for spectra vs non-spectra:
+    - If X-axis is spectroscopic but there are multiple curves, it is 'multi spectra chart', NOT 'multiple line chart'
+    - If X-axis is a general physical quantity (NOT spectroscopic) but there are multiple curves, it is 'multiple line chart', NOT 'multi spectra chart'
+    
+    ### B. SCHEMATIC DIAGRAMS (no quantitative axes)
+    
+    **CRITICAL: Check for energy axes FIRST before classifying molecular structures**
+    
+    **Step B0 (PRIORITY CHECK): Reaction energy profile diagram**
+    - Does the figure have BOTH of these features?
+      (a) A Y-axis labeled with energy units (eV, kcal/mol, kJ/mol, Hartree)
+      (b) An X-axis labeled "Reaction coordinate" or "Reaction path"
+    - If YES to BOTH -> 'reaction energy profile diagram' (even if molecular structures are shown alongside)
+    - If NO -> Continue to Step B1
+    
+    **Step B1: Molecular structure diagram**
+    - Do you see atoms rendered as colored spheres/balls with bonds as sticks?
+    - Includes: ball-and-stick, space-filling, 2D structural formulas, DFT/MD structures
+    - IMPORTANT: Only classify as molecular structure diagram if the figure PURELY shows
+      molecular/atomic structure WITHOUT energy axes and WITHOUT transformation arrows
+    - YES (pure structure, no energy axes, no transformation arrows) -> molecular structure diagram
+    - NO -> Next step
+    
+    **Step B2: Reaction scheme**
+    - Do you see reaction arrows showing chemical transformation between species?
+    - The arrows must show TRANSFORMATION (reactants becoming products), not just pointing/labeling
+    - YES -> reaction scheme
+    - NO -> Next step
+    
+    **Step B3: Process flow diagram**
+    - Numbered/ordered procedural steps with action labels?
+    - Examples: "Precursor pulse", "N2 purge", "Plasma exposure"
+    - YES -> process flow diagram
+    - NO -> Next step
+    
+    **Step B4: Device structure diagram**
+    - Static layered cross-section with material labels?
+    - Shows substrate, oxide, metal, dielectric layers
+    - YES -> device structure diagram
+    - NO -> Next step
+    
+    **Step B5: Apparatus diagram**
+    - Laboratory equipment hardware layout?
+    - Shows reactors, chambers, pumps, gas lines, heaters
+    - YES -> apparatus diagram
+    - NO -> Next step
+    
+    **Step B6: Conceptual diagram**
+    - Default category for schematic illustrations explaining concepts or mechanisms
+    - Use ONLY when none of the above match
+    
+    ### C. REAL IMAGES vs UNKNOWN
+    
+    **image panel**: ONLY for real instrument-captured photographs (SEM, TEM, AFM, STM, HRTEM,
+    EDX maps, optical microscopy). You must be able to identify it as a real photograph of a
+    physical sample captured by a specific instrument.
+    
+    **unknown**: For ANY figure that does not clearly fit the defined categories. When in doubt
+    between 'image panel' and 'unknown', prefer 'unknown'. Only use 'image panel' when you are
+    confident the figure shows real microscopy/photographic images.
+    
+    ## Sub-figure Key Rules (MUST FOLLOW STRICTLY)
+    
+    You are given a JSON template below with pre-defined keys. You MUST follow these rules:
+    
+    1. **Use ONLY the keys provided in the template.** Do not add new keys that are not in the template.
+       For example, if the template is {{"a": "", "b": "", "c": ""}}, your output must have exactly
+       keys "a", "b", "c" - no more, no less.
+    
+    2. **Do NOT classify the overall/composite figure as a separate entry.** Only classify the
+       individual sub-figures indicated by the template keys. If the template has 3 keys, you
+       should output exactly 3 classifications.
+    
+    3. **If a template key does not correspond to a visible sub-figure**, classify it based on
+       the most relevant visible content in the figure. Do not leave any key empty.
+    
+    4. **Do NOT rename or modify the keys.** Use the exact key strings from the template
+       (e.g., if the template says "a", output "a", not "a'" or "A").
+
+    Caption: {caption}
+
+    {example_reference}
+
+    ## Output
+    Return ONLY a valid JSON dictionary with EXACTLY the same keys as the template below.
+    Use EXACT category names from the taxonomy. Do NOT add or remove any keys.
+    {uncategorized_dict}
+
+  example_reference_template: |
+    ## Original Paper Context
+    The middle images (between the first and the reference examples) are pages from the original paper. Use them as supplementary context for understanding the figure's purpose and content.
+    
+    ## Reference Examples
+    The remaining images (after the original paper) show examples of various categories, with the category name indicated in red text; some categories may not have examples. Use these to calibrate your judgment.
+

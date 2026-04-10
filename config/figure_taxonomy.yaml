@@ -1,0 +1,252 @@
+# ============================================================
+# Sci-ImageMiner Figure Classification Taxonomy v1
+# 49 categories
+# ============================================================
+
+3d bar chart:
+  description: A bar chart rendered in 3D perspective, with bars rising from a 2D base plane along a third axis.
+
+3d scatter plot:
+  description: >
+    A scatter plot in 3D space with data points defined by three variables (X, Y, Z) and three
+    visible axes. Must show abstract data points — if the 3D rendering depicts physical objects
+    (atoms, crystal surfaces), classify as 'molecular structure diagram' or 'image panel'.
+
+adsorption isotherm:
+  description: Plot showing gas uptake vs. pressure (or P/P0), used for BET analysis and adsorption capacity.
+
+apparatus diagram:
+  description: >
+    A labeled diagram of laboratory equipment layout (reactors, chambers, pumps, gas lines, heaters).
+    Focus is on hardware components and spatial arrangement of the experimental setup.
+    NOTE: If the figure shows a fabricated device's internal layered cross-section rather than
+    a full equipment setup, classify as 'device structure diagram'.
+
+area chart:
+  description: Filled area under a line to show cumulative values or trends.
+
+band diagram:
+  description: Chart plotting electronic energy levels vs. momentum (k) or position, showing band gaps and Fermi levels.
+
+bar chart:
+  description: Rectangular bars (single series) comparing quantities across categories.
+
+box plot:
+  description: Statistical distribution showing median, quartiles, and outliers.
+
+bubble chart:
+  description: Scatter plot with variable marker size representing a third dimension.
+
+chromaticity diagram:
+  description: Horseshoe-shaped or triangular color-space diagram representing chromaticity of colors.
+
+comparison table:
+  description: Structured tabular comparison of properties or studies.
+
+competing reaction rate curve:
+  description: >
+    A SCHEMATIC diagram using abstract/idealized smooth curves (NOT real data), labels, and shaded
+    regions to explain competing reaction rates in ALD/ALE (e.g., temperature window diagrams).
+
+conceptual diagram:
+  description: >
+    A schematic illustration explaining a theoretical model, physical mechanism, or abstract concept
+    using simplified drawings, icons, labeled regions, and arrows. Common examples: schematic
+    cross-sections of physical processes (ion bombardment, diffusion, etching), growth mode
+    explanations, selectivity concepts, device operation principles.
+    This is the broadest schematic category — use it only when the figure does NOT fit any more
+    specific schematic type (process flow diagram, reaction scheme, molecular structure diagram,
+    device structure diagram).
+    IMPORTANT: Do NOT classify ball-and-stick / space-filling atomic models as conceptual diagram
+    — those belong to 'molecular structure diagram' even if they show molecules on a surface.
+    Do NOT classify diagrams with reaction arrows (→) between chemical species as conceptual
+    diagram — those belong to 'reaction scheme'.
+
+contour heatmap:
+  description: A 2D plot using color gradients or contour lines to map a measured quantity across two spatial or parameter dimensions.
+
+device structure diagram:
+  description: >
+    A cross-sectional or layered schematic of a fabricated device or thin-film stack, showing
+    labeled material layers (substrate, oxide, metal, dielectric) arranged vertically with clear
+    boundaries and optional thickness annotations. Must show a static layered STRUCTURE.
+
+donut chart:
+  description: Pie chart with a central hole to show proportions.
+
+element–property matrix:
+  description: Matrix-style visualization linking elements with categorical or binary properties.
+
+formula:
+  description: Mathematical or chemical expression typeset as a formula or equation.
+
+funnel chart:
+  description: Progressive reduction across stages of a process.
+
+grouped bar chart:
+  description: Bars grouped by categories for side-by-side comparison of multiple series.
+
+heatmap:
+  description: Matrix of values represented with a color scale.
+
+image panel:
+  description: >
+    One or more microscopy/spectroscopy images (SEM, TEM, AFM, STM, HRTEM, EDX maps, optical
+    microscopy) showing real physical samples, surfaces, or nanostructures. These are real
+    instrument-captured photographs, NOT computer-generated schematics or plots.
+    NOTE: If the figure type does not match any of the 48 defined categories, classify as 'unknown'
+    rather than defaulting to 'image panel'.
+
+line chart:
+  description: >
+    A plot with a SINGLE continuous line (one data series) where points are connected by line
+    segments, showing a trend against a continuous X-axis. The X-axis must be a general physical
+    quantity (temperature, time, thickness, cycles, distance, etc.) — NOT a spectroscopic quantity.
+
+map/geo chart:
+  description: Geographic or spatial distribution visualization.
+
+molecular structure diagram:
+  description: >
+    A diagram displaying the chemical structure of molecules, precursors, or atomic arrangements
+    using standard chemistry visualization: 2D structural formulas (atoms connected by bonds with
+    element symbols), OR 3D ball-and-stick / space-filling models rendered from computational
+    chemistry (DFT, MD simulations).
+    This category INCLUDES: (1) isolated molecule structures, (2) ball-and-stick or space-filling
+    models of molecules adsorbed on surfaces/substrates (e.g., DFT-optimized adsorption geometries),
+    (3) crystal unit cells and surface slab models showing atomic positions.
+    Key visual features: individual atoms are rendered as colored spheres or labeled nodes, bonds
+    shown as sticks or lines, often with a 3D perspective. The rendering style is distinctly
+    atomistic — you can see individual atoms.
+    NOT this category if: there are reaction arrows (→, ⇌) between species (→ 'reaction scheme'),
+    or the drawing uses simplified icons/cartoons rather than atomistic rendering (→ 'conceptual diagram').
+
+multi spectra chart:
+  description: >
+    Multiple overlaid spectra on the SAME axes from spectroscopy/diffraction (XPS, XRD, FTIR,
+    Raman, UV-vis, EDS, etc.). X-axis is a spectroscopic quantity (binding energy, wavenumber,
+    2-theta, wavelength, Raman shift, m/z). Multiple curves share the same Y baseline.
+    If spectra are vertically offset/stacked with separate baselines, use 'stacked spectra chart'.
+    If only ONE spectrum, use 'spectra chart'.
+    NOTE: If the X-axis is a general physical quantity (temperature, time, cycles) rather than a
+    spectroscopic quantity, classify as 'multiple line chart' instead.
+
+multi-axis chart:
+  description: A plot with two or more Y-axes (left and right) showing different scales or units for different data series on the same X-axis.
+
+multiple line chart:
+  description: >
+    TWO OR MORE continuous lines (multiple data series) on the same axes, each with different
+    color/style. X-axis is a general physical quantity (temperature, time, cycles, thickness,
+    pressure) — NOT a spectroscopic quantity (that would be 'multi spectra chart').
+    Points must be connected by lines — if markers only without lines, use 'multiple scatter plot'.
+
+multiple scatter plot:
+  description: >
+    TWO OR MORE sets of discrete data points (multiple series) on the same axes, using different
+    marker shapes or colors. Points are NOT connected by lines. If only ONE series, use
+    'scatter plot'. If points are connected by lines, use 'multiple line chart'.
+
+network diagram:
+  description: Nodes and edges showing relationships or interactions.
+
+periodic table map:
+  description: Property overlay aligned to the full periodic table layout.
+
+phase diagram:
+  description: Chart showing equilibrium phase boundaries in temperature–pressure–composition space.
+
+pie chart:
+  description: Circular chart divided into slices to show proportions.
+
+polar chart (rose chart):
+  description: Circular chart plotting values by angle.
+
+process flow diagram:
+  description: >
+    A schematic showing a SEQUENCE of discrete, numbered/ordered operational steps connected by
+    directional arrows. Steps are labeled with actions (e.g., "Precursor pulse", "N2 purge",
+    "Plasma exposure") in a linear or cyclic layout. The emphasis is on ORDER and SEQUENCE.
+    Must show clearly numbered or ordered PROCEDURAL steps with action labels.
+
+process timing diagram:
+  description: >
+    A time-axis plot showing process variables (gas flows, pressure, power, valve states) as
+    step-like rectangular or pulsed waveforms with sharp on/off transitions and labeled
+    pulse/purge segments. Distinguished from 'line chart' by discrete step-like rectangular pulses
+    rather than smooth continuous trends.
+
+radar chart (spider chart):
+  description: Multivariate data represented in a radial layout.
+
+reaction energy profile diagram:
+  description: >
+    A quantitative energy diagram plotting potential energy along an abstract "reaction coordinate".
+    ALL THREE conditions MUST be met simultaneously:
+    (1) Y-axis is energy (eV, kcal/mol, kJ/mol, Hartree);
+    (2) X-axis is explicitly labeled "Reaction coordinate" or "Reaction path" (NOT any concrete
+        physical quantity);
+    (3) Labeled chemical states (reactants, intermediates, TS, products) at energy minima/maxima.
+    CRITICAL: If the X-axis is temperature, time, distance, thickness, cycles, pressure, or any
+    other concrete measurable quantity, it is NOT this category — use line chart, scatter plot,
+    or their multiple variants. If the diagram also shows molecular structures with reaction
+    arrows alongside the energy curve, it may be 'reaction scheme'.
+
+reaction scheme:
+  description: >
+    A diagram showing chemical TRANSFORMATIONS between species. Must contain reaction arrows
+    (→, ⇌, or curved arrows) connecting reactant species to product species. Includes chemical
+    formulas, molecular structures, reagent labels, and reaction conditions near arrows.
+    In ALD/ALE context, this also includes surface reaction mechanism diagrams that show
+    before/after states of a surface with arrows indicating the chemical transformation
+    (e.g., precursor approaching surface → adsorbed state → byproduct leaving).
+    Key requirement: explicit arrows showing WHAT transforms into WHAT.
+    NOT this category if: molecules are shown without transformation arrows (→ 'molecular
+    structure diagram'), or the diagram shows procedural steps without chemical detail
+    (→ 'process flow diagram').
+
+scatter plot:
+  description: >
+    A SINGLE set of discrete data points (one series) on two quantitative axes. Points appear as
+    markers (dots, circles, squares, triangles) WITHOUT connecting lines. If points are connected
+    by lines, use 'line chart'. If TWO OR MORE series, use 'multiple scatter plot'.
+
+spectra chart:
+  description: >
+    A SINGLE spectrum from spectroscopy/diffraction (XPS, XRD, FTIR, Raman, UV-vis, EDS, etc.).
+    X-axis is a spectroscopic quantity (binding energy, wavenumber, 2-theta, wavelength, Raman
+    shift, m/z), Y-axis is intensity/counts/absorbance. If MULTIPLE spectra, use 'multi spectra
+    chart' or 'stacked spectra chart'.
+
+stacked bar chart:
+  description: Bars stacked to show part-to-whole relationships.
+
+stacked spectra chart:
+  description: >
+    Multiple spectra vertically OFFSET (stacked) so each has its own baseline, arranged one above
+    another for comparison. X-axis is a spectroscopic quantity. Unlike 'multi spectra chart' where
+    curves overlap on the same baseline, stacked spectra are separated vertically.
+
+table:
+  description: General tabular data representation.
+
+timeline chart:
+  description: Chronological sequence of events or steps.
+
+tree diagram:
+  description: Hierarchical branching structure (taxonomy, phylogeny, decision tree).
+
+treemap:
+  description: Nested rectangles sized by values to show hierarchy.
+
+unknown:
+  description: >
+    Any figure that cannot be confidently classified into the 48 defined categories above.
+    Includes highly specialized visualizations, figures with insufficient visual context,
+    or non-standard visualizations. Use 'unknown' rather than guessing.
+
+workflow diagram:
+  description: >
+    Diagram showing a computational, data-processing, or methodological pipeline (e.g., ML
+    workflow, simulation pipeline). Unlike 'process flow diagram' which shows physical/chemical
+    experimental steps, this shows computational or analytical methodology steps.

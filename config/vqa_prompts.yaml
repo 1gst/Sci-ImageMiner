@@ -1,0 +1,249 @@
+# VQA 任务提示词配置文件（所有版本）
+
+# VQA 答案类型说明 v1
+instructions_v1:
+  "Yes/No": |
+    Answer with only 'Yes' or 'No'.
+  "Factoid": |
+    Provide a concise, specific answer (a single term or phrase).
+  "List": |
+    Provide a comma-separated list of items (order is not important).
+  "Paragraph": |
+    Provide a detailed explanatory answer with at least 3 sentences. If necessary, use the data in the image and other relevant information to provide further explanation.
+
+# VQA 答案类型说明 v2
+instructions_v2:
+  "Yes/No": |
+    Answer with only 'Yes' or 'No'. Do NOT add any explanation or additional words.
+  "Factoid": |
+    Provide a concise but complete answer (typically 1-10 words or a short phrase).
+    - If the correct answer requires explanation or multiple components, do NOT oversimplify
+    - Do NOT answer with just 'Yes' or 'No' (use the Yes/No type for those)
+    - Include necessary scientific context (e.g., units, conditions, substance names)
+    Example questions and appropriate answers:
+    - "What is the energy barrier?" -> "21 kcal/mol" (NOT "high" or "barrier")
+    - "What surface property enables chemisorption?" -> "Lewis acid sites (Al3+ centers)" (NOT "acid sites")
+    - "What does the figure show?" -> "Linear growth with constant growth-per-cycle" (NOT "linear growth")
+  "List": |
+    Provide a comma-separated list of items.
+    - Order is not important
+    - Include all relevant items mentioned in the paper or visible in the figure
+    - Be comprehensive but avoid redundancy
+  "Paragraph": |
+    Provide a detailed explanatory answer with at least 3 sentences.
+    - Ground your answer in specific visual evidence
+    - Reference relevant data points or features shown in the figure
+    - Explain the scientific significance or implications
+
+# VQA 答案类型说明 v3 (保守优化：只去 preamble，保持 v2 长度)
+instructions_v3:
+  "Yes/No": |
+    Answer with only 'Yes' or 'No'. Do NOT add any explanation or additional words.
+  "Factoid": |
+    Provide a concise but complete answer (typically 1-10 words or a short phrase).
+    - If the correct answer requires explanation or multiple components, do NOT oversimplify
+    - Do NOT answer with just 'Yes' or 'No' (use the Yes/No type for those)
+    - Include necessary scientific context (e.g., units, conditions, substance names)
+    - DO NOT begin with "Based on..." or any preamble - state the answer directly
+    Example questions and appropriate answers:
+    - "What is the energy barrier?" -> "21 kcal/mol" (NOT "high" or "barrier")
+    - "What surface property enables chemisorption?" -> "Lewis acid sites (Al3+ centers)" (NOT "acid sites")
+    - "What does the figure show?" -> "Linear growth with constant growth-per-cycle" (NOT "linear growth")
+  "List": |
+    Provide a comma-separated list of items.
+    - Order is not important
+    - Include all relevant items mentioned in the paper or visible in the figure
+    - Be comprehensive but avoid redundancy
+  "Paragraph": |
+    Provide a concise explanatory answer in 2-3 sentences (around 40-60 words).
+    - DO NOT begin with "Based on the visual content of..." or similar preambles
+    - Start directly with the answer content
+    - DO NOT write long analytical essays or step-by-step reasoning
+    - Reference specific visual features or data from the figure
+    - Include specific data values, measurements, and observations
+
+# VQA 任务提示词 v1
+v1:
+  system: |
+    You are an expert at answering scientific questions about ALD/E research figures.
+  user: |
+    You are answering questions about scientific figures from ALD/E research papers.
+
+    ## Image Input Order
+    - **Image 1 (first image):** The figure being questioned.
+    - **Images 2-N (remaining images):** Pages from the original paper, providing full-text context for understanding the figure.
+
+    Question: {question}
+
+    Answer Type: {answer_type}
+
+    Requirements:
+    {instruction}
+
+    Your answer should be based on:
+    1. The visual content of the figure (Image 1)
+    2. The full-text context from the paper (Images 2-N)
+    3. The provided caption
+
+    Additional Context - Caption: {caption}
+
+    Please provide your answer:
+
+# VQA 任务提示词 v3 (保守优化：只去 preamble，保持 v2 长度)
+v3:
+  system: |
+    You are an expert at answering scientific questions about ALD/E research figures.
+  user: |
+    You are answering questions about scientific figures from ALD/E research papers.
+
+    ## Image Input Order
+    - **Image 1 (first image):** The figure being questioned.
+    - **Images 2-N (remaining images):** Pages from the original paper, providing full-text context for understanding the figure.
+
+    ## Task
+    Question: {question}
+
+    Answer Type: {answer_type}
+
+    ## Critical Answer Type Rules
+
+    **IMPORTANT: You must strictly follow the answer type requirements below:**
+
+    {instruction}
+
+    ## IMPORTANT OUTPUT RULE
+    - DO NOT begin your answer with "Based on the visual content of...", "According to...", "Looking at...", or any preamble
+    - Start your answer directly with the factual content
+
+    ## Answer Guidelines
+    1. Base your answer on BOTH the visual content (Image 1) AND the paper context (Images 2-N)
+    2. Use the paper context to ensure accuracy of scientific details
+    3. If the question asks about quantitative values, provide exact numbers with units
+    4. If the question asks about mechanisms, cite evidence from the figure
+
+    Additional Context - Caption: {caption}
+
+    Please provide your answer:
+
+# VQA 答案类型说明 v4 (基于 v3 优化 Paragraph 长度控制)
+instructions_v4:
+  "Yes/No": |
+    Answer with only 'Yes' or 'No'. Do NOT add any explanation or additional words.
+  "Factoid": |
+    Provide a concise but complete answer (typically 1-10 words or a short phrase).
+    - If the correct answer requires explanation or multiple components, do NOT oversimplify
+    - Do NOT answer with just 'Yes' or 'No' (use the Yes/No type for those)
+    - Include necessary scientific context (e.g., units, conditions, substance names)
+    - DO NOT begin with "Based on..." or any preamble - state the answer directly
+    Example questions and appropriate answers:
+    - "What is the energy barrier?" -> "21 kcal/mol" (NOT "high" or "barrier")
+    - "What surface property enables chemisorption?" -> "Lewis acid sites (Al3+ centers)" (NOT "acid sites")
+    - "What does the figure show?" -> "Linear growth with constant growth-per-cycle" (NOT "linear growth")
+  "List": |
+    Provide a comma-separated list of items.
+    - Order is not important
+    - Include all relevant items mentioned in the paper or visible in the figure
+    - Be comprehensive but avoid redundancy
+  "Paragraph": |
+    Provide a concise explanatory answer in 2-3 sentences (around 40-50 words).
+    - DO NOT begin with "Based on the visual content of..." or similar preambles
+    - Start directly with the key finding or answer
+    - DO NOT write long analytical essays or step-by-step reasoning
+    - DO NOT exceed 60 words
+    - Reference specific visual features or data from the figure
+    - Include specific data values, measurements, and observations
+
+# VQA 任务提示词 v4 (基于 v3 优化 Paragraph 长度控制)
+v4:
+  system: |
+    You are an expert at answering scientific questions about ALD/E research figures.
+  user: |
+    You are answering questions about scientific figures from ALD/E research papers.
+
+    ## Image Input Order
+    - **Image 1 (first image):** The figure being questioned.
+    - **Images 2-N (remaining images):** Pages from the original paper, providing full-text context for understanding the figure.
+
+    ## Task
+    Question: {question}
+
+    Answer Type: {answer_type}
+
+    ## Critical Answer Type Rules
+
+    **IMPORTANT: You must strictly follow the answer type requirements below:**
+
+    {instruction}
+
+    ## IMPORTANT OUTPUT RULE
+    - DO NOT begin your answer with "Based on the visual content of...", "According to...", "Looking at...", or any preamble
+    - Start your answer directly with the factual content
+    - For Paragraph type: keep your answer to 2-3 sentences, around 40-50 words. DO NOT exceed 60 words.
+
+    ## Answer Guidelines
+    1. Base your answer on BOTH the visual content (Image 1) AND the paper context (Images 2-N)
+    2. Use the paper context to ensure accuracy of scientific details
+    3. If the question asks about quantitative values, provide exact numbers with units
+    4. If the question asks about mechanisms, cite evidence from the figure
+
+    Additional Context - Caption: {caption}
+
+    Please provide your answer:
+
+# VQA 任务提示词 v2 (优化版:明确答案类型和长度要求)
+v2:
+  system: |
+    You are an expert at answering scientific questions about ALD/E research figures.
+  user: |
+    You are answering questions about scientific figures from ALD/E research papers.
+
+    ## Image Input Order
+    - **Image 1 (first image):** The figure being questioned.
+    - **Images 2-N (remaining images):** Pages from the original paper, providing full-text context for understanding the figure.
+
+    ## Task
+    Question: {question}
+
+    Answer Type: {answer_type}
+
+    ## Critical Answer Type Rules
+
+    **IMPORTANT: You must strictly follow the answer type requirements below:**
+
+    ### If Answer Type is "Yes/No":
+    - Your answer must be EXACTLY 'Yes' or 'No'
+    - Do NOT add any explanation, reasoning, or additional text
+    - Example: "Yes" or "No" (nothing else)
+
+    ### If Answer Type is "Factoid":
+    - Provide a fact-based answer that is CONCISE but COMPLETE
+    - Typical length: 1-10 words or a short phrase
+    - DO NOT use "Yes" or "No" as your answer (those are for Yes/No type only)
+    - Include necessary context:
+      * Numerical values with units (e.g., "21 kcal/mol", "0.08 nm per cycle")
+      * Scientific terms with definitions (e.g., "Lewis acid sites (Al3+ centers)")
+      * Complete substance names (e.g., "Trimethylaluminum (TMA)")
+    - If the ground truth is explanatory (more than 10 words), your answer should also be explanatory
+    - Key principle: Match the complexity level of the expected answer
+
+    ### If Answer Type is "List":
+    - Provide a comma-separated list
+    - Include ALL relevant items visible in the figure or mentioned in the paper
+    - Order does not matter
+    - Example format: "item1, item2, item3"
+
+    ### If Answer Type is "Paragraph":
+    - Write a detailed explanation (minimum 3 sentences)
+    - Reference specific visual features or data from the figure
+    - Explain scientific reasoning and implications
+
+    ## Answer Guidelines
+    1. Base your answer on BOTH the visual content (Image 1) AND the paper context (Images 2-N)
+    2. Use the paper context to ensure accuracy of scientific details
+    3. If the question asks about quantitative values, provide exact numbers with units
+    4. If the question asks about mechanisms, cite evidence from the figure
+
+    Additional Context - Caption: {caption}
+
+    Please provide your answer:
+
