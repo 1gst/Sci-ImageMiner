@@ -164,3 +164,121 @@ v2:
 
     Use "a" as default key if no sub-figure labels. Use "" for non-extractable figures.
 
+v3:
+  system: |
+    You are an expert at extracting data from scientific charts and plots.
+  user: |
+    You are tasked with extracting tabular data from scientific charts or plots in ALD/E research papers.
+
+    ## Image Input Order
+    - **Image 1 (first image):** The chart or plot to extract data from.
+    - **Images 2-N (remaining images):** Pages from the original paper, providing full-text context for understanding the figure.
+
+    ## Task Overview
+    1. Determine if the figure contains extractable quantitative data
+    2. If YES, extract data and format as a table matching the visual structure
+    3. If NO, return empty string ""
+
+    ## Extractable vs Non-extractable
+
+    **Extractable (return table):**
+    - Bar charts, line charts, scatter plots with quantitative axes
+    - Spectra (XPS, Raman, FTIR, XRD patterns, etc.)
+    - Phase diagrams, ternary plots with numerical scales
+    - Any chart with labeled axes showing quantitative relationships
+
+    **Non-extractable (return ""):**
+    - Microscopy images (SEM, TEM, AFM, etc.)
+    - Cluster diagrams, dendrograms
+    - Qualitative schemes, flow diagrams
+    - Setup diagrams, apparatus diagrams
+    - Mechanism diagrams, reaction schemes
+
+    ## Critical Table Extraction Rules
+
+    **Rule 1: Match Visual Table Structure**
+    - COUNT the number of distinct data series shown in the figure
+    - Each legend item = one data series (column)
+    - Example: If figure shows 3 curves with legend "Sample A, Sample B, Sample C"
+      → Table should have columns: X-axis label | Sample A | Sample B | Sample C
+
+    **Rule 2: Column Header Format**
+    - Use the EXACT axis label from the figure (including units)
+    - For multiple conditions, put condition name in column header
+    - Example: "NiO_Alanis (nm)" not just "Thickness"
+
+    **Rule 3: Data Precision Representation**
+    - Use "~" prefix for approximate/read values: ~0.34, ~1.5
+    - Use "-" for missing/unmeasured data points
+    - Use scientific notation when appropriate: 1.5e-5, 3.2e4
+    - Include uncertainty if shown: 0.28 ± 0.02
+
+    **Rule 4: Data Sampling Strategy**
+    - Extract data at REGULAR intervals (not every single pixel)
+    - For smooth curves: extract ~10-15 representative points
+    - For spectra: extract key peaks and ~5-10 baseline points
+    - Include key features: peaks, valleys, inflection points
+
+    **Rule 5: Table Format**
+    - DO NOT wrap table in ```markdown``` code blocks
+    - Use standard GitHub Markdown syntax
+    - Align columns consistently (left or center)
+
+    ## Example Extracted Tables
+
+    **Example 1: Multiple line chart**
+    Figure shows 3 curves with X-axis "Temperature (°C)", Y-axis "Growth Rate (Å/cycle)", 
+    legend: "Sample A, Sample B, Sample C"
+
+    Correct table:
+    | Temperature (°C) | Sample A (Å/cycle) | Sample B (Å/cycle) | Sample C (Å/cycle) |
+    | --- | --- | --- | --- |
+    | 100 | ~0.85 | ~0.92 | ~0.78 |
+    | 150 | ~1.10 | ~1.25 | ~0.95 |
+    | 200 | ~1.35 | ~1.50 | ~1.15 |
+
+    **Example 2: Spectrum with peak positions only**
+    Figure shows XPS spectrum with X-axis "Binding Energy (eV)", Y-axis "Intensity (a.u.)"
+
+    Correct table (peak-focused):
+    | Binding Energy (eV) | Intensity (a.u.) |
+    | --- | --- |
+    | 98.5 | ~0.2 |
+    | 99.0 | 1.0 (peak) |
+    | 99.5 | ~0.6 |
+    | 100.0 | ~0.3 |
+
+    **Example 3: Surface composition depth profile**
+    Figure shows sputter time vs. atomic percentages for multiple elements
+
+    Correct table:
+    | Sputter Time (min) | W (%) | C (%) | N (%) | O (%) | Si (%) |
+    | --- | --- | --- | --- | --- | --- |
+    | 0 | ~10 | ~15 | ~8 | ~2 | 0 |
+    | 5 | ~48 | ~30 | ~10 | ~1 | 0 |
+    | 10 | ~52 | ~32 | ~11 | ~1 | 0 |
+    | 15 | ~50 | ~30 | ~10 | ~1 | 0 |
+    | 20 | ~25 rising | ~10 | ~5 | ~5 rising | ~30 rising |
+
+    ## Common Mistakes to Avoid
+    - Wrong number of columns (count legend items carefully!)
+    - Missing "~" for approximate read values
+    - Over-extracting data (too many rows, noisy)
+    - Under-extracting data (missing key features)
+    - Wrong column headers (not matching axis labels)
+
+    Additional Context - Caption: {caption}
+
+    ## Output Format
+    Return a JSON dictionary with sub-figure labels as keys and markdown tables as string values.
+    Add 'cot' in the Output JSON.
+    
+    Example:
+    {{
+      "a": "| X-axis Label | Data Series 1 | Data Series 2 |\n| --- | --- | --- |\n| value1 | value1a | value1b |\n| value2 | value2a | value2b |",
+      "b": "",
+      "cot": "",
+    }}
+
+    Use "a" as default key if no sub-figure labels. Use "" for non-extractable figures.
+

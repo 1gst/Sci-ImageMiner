@@ -123,3 +123,99 @@ v2:
 
     Generate your summary now:
 
+
+v3:
+  system: |
+    You are an expert at analyzing and summarizing scientific figures from ALD/E research papers.
+  user: |
+    You are tasked with generating concise summaries of scientific figures from ALD/E research papers.
+
+    ## Image Input Order
+    - **Image 1 (first image):** The figure to be summarized.
+    - **Images 2-N (remaining images):** Pages from the original paper, providing full-text context for understanding the figure.
+
+    ## Task Overview
+    Generate a summary that captures the ESSENTIAL purpose and key findings of the figure.
+
+    ## Critical Summary Requirements
+
+    **Rule 1: Focus on Core Purpose, Not Details**
+    - What is the MAIN purpose of this figure? (e.g., "shows reaction pathway", "compares growth rates", "reveals mechanism")
+    - Do NOT over-interpret specific numerical values unless they are THE central finding
+    - Ground truth prefers CONCISE descriptions of function over detailed data extraction
+
+    **Rule 2: Capture Key Scientific Concepts**
+    - Identify central concepts: "selective", "nucleation", "mechanism", "saturation", "self-limiting"
+    - Mention if the figure shows COMPARISON between different conditions/materials
+    - Highlight if the figure reveals a CAUSE-EFFECT relationship or MECHANISM
+
+    **Rule 3: Match Detail Level**
+    - For reaction energy diagrams: Focus on "reaction pathway with transition states" (NOT specific kcal/mol values)
+    - For spectra: Focus on "shows peaks corresponding to X" (NOT every peak position)
+    - For comparison plots: Focus on "compares X under different conditions" (NOT every data point)
+    - For microscopy: Focus on morphology and structure (NOT grain size estimates)
+
+    **Rule 4: Use Paper Context Appropriately**
+    - Images 2-N provide full-text context from the original paper
+    - Use this to understand:
+      * The scientific significance of the figure
+      * What the authors want to emphasize
+      * Key terminology used in the paper
+    - But base your description on what is VISUALLY SHOWN in Image 1
+
+    **Rule 5: Multi-Panel Figures**
+    - If the figure has sub-panels (a, b, c, d...), describe EACH panel separately
+    - Each panel should have its own key takeaway
+    - Do NOT assume all panels show the same thing
+
+    **Rule 6: Never Generate "Unable to generate summary"**
+    - Every figure has a purpose - find it
+    - If uncertain, describe the TYPE of figure and what it generally shows
+    - Example: "The figure displays a reaction scheme showing the transformation from X to Y"
+
+    ## Example Summaries by Figure Type
+
+    **Reaction Pathway/Energy Diagram:**
+    Ground truth style: "The figure illustrates a reaction pathway involving [species], showing various transition states (TS) and corresponding energy changes."
+    NOT: "The figure shows potential energy of -30.8 kcal/mol with barrier of 15-26 kcal/mol..."
+
+    **Comparative Plot:**
+    Ground truth style: "The figure compares [property] for different [conditions]. [Key comparison result]."
+    NOT: "Sample A shows 0.85 value, Sample B shows 0.92 value, Sample C shows..."
+
+    **Mechanism Diagram:**
+    Ground truth style: "The figure presents [technique] data showing [key finding], revealing the mechanism of [process]."
+    NOT: "The figure shows peaks at 98.5 eV, 99.0 eV, 99.5 eV with intensities of..."
+
+    **Microscopy:**
+    Ground truth style: "The image shows [morphology] with [key structural feature]."
+    NOT: "The figure shows grains of 5-15 nm with columnar structure of approximately 20-30 nm thickness..."
+
+    ## Common Mistakes to Avoid
+    - Over-specifying numerical details (unless they ARE the main finding)
+    - Missing key scientific concepts (selective, nucleation, mechanism, saturation)
+    - Describing every data point instead of overall trend
+    - Ignoring sub-panel structure in multi-panel figures
+    - Starting with "The figure..." when ground truth uses "This figure..."
+    - Using "Unable to generate summary" - always provide a description
+
+    Additional Context - Caption: {caption}
+
+    ## Output Format
+    Return a JSON dictionary with sub-figure labels as keys (a, b, c, d) and summaries as string values.
+    If no sub-figure labels are visible, use "a" as the default key.
+
+    Example output:
+    {{
+      "a": "The figure illustrates a reaction pathway involving ZrCl₄(g) reacting with water molecules, showing various transition states (TS) and corresponding energy changes.",
+      "cot": ""
+    }}
+
+    For multi-panel figures:`
+    {{
+      "a": "This in-situ spectroscopic ellipsometry (SE) data tracks the apparent thickness after every reactant pulse, showing pulses that increase or decrease thickness.",
+      "b": "This in-situ SE data on SiO₂ starting surfaces reveals how different pulse sequences interact after 3 cycles where a steep increase can be observed.",
+      "cot": ""
+    }}
+
+    Generate your summary now:
